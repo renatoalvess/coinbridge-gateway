@@ -24,7 +24,7 @@ Projeto arquitetado e desenvolvido utilizando o [Spec Kit](https://github.com/gi
 
 ## Tecnologias Utilizadas
 
-- **Runtime:** Node.js (v20+) com TypeScript
+- **Runtime:** Node.js (v24+) com TypeScript
 - **Framework Web:** Fastify
 - **Filas e Jobs:** BullMQ + Redis
 - **ORM:** Prisma ORM (`@prisma/adapter-pg`)
@@ -68,7 +68,7 @@ Detalha a arquitetura interna distribuída.
 ## Como Instalar e Rodar Localmente
 
 ### 1. Preparando o Ambiente
-Você precisará de **Node.js (20+)**, **pnpm** e **Docker** instalados.
+Você precisará de **Node.js (24+)**, **pnpm** e **Docker** instalados.
 
 1. Clone o repositório e instale os pacotes:
    ```bash
