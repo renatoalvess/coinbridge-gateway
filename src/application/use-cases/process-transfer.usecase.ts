@@ -9,12 +9,13 @@ export class ProcessTransferUseCase {
     private readonly transactionRepository: ITransactionRepository,
     private readonly pixProvider: IPixProvider,
     private readonly queueProvider: IQueueProvider,
-    private readonly exchangeRateProvider: IExchangeRateProvider
+    private readonly exchangeRateProvider: IExchangeRateProvider,
   ) {}
 
   async execute(transactionId: string): Promise<void> {
-    const transaction = await this.transactionRepository.findById(transactionId);
-    
+    const transaction =
+      await this.transactionRepository.findById(transactionId);
+
     if (!transaction) {
       throw new TransactionNotFoundError(transactionId);
     }
@@ -24,15 +25,21 @@ export class ProcessTransferUseCase {
 
     try {
       // 1. Fetch real-time exchange rate
-      const rate = await this.exchangeRateProvider.getRate(transaction.currency, 'BRL');
-      
+      const rate = await this.exchangeRateProvider.getRate(
+        transaction.currency,
+        'BRL',
+      );
+
       // 2. Apply rate to calculate amountBrl
       transaction.applyExchangeRate(rate);
-      
+
       // 3. Send Pix using the calculated BRL amount, not the original crypto amount
       const brlAmount = transaction.amountBrl!;
-      const success = await this.pixProvider.sendPix(brlAmount, transaction.merchantId);
-      
+      const success = await this.pixProvider.sendPix(
+        brlAmount,
+        transaction.merchantId,
+      );
+
       if (success) {
         transaction.complete();
       } else {

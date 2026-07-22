@@ -35,7 +35,9 @@ export function errorHandler(
   }
 
   if (error instanceof DoubleSpendingError) {
-    return reply.status(202).send({ message: 'Already processed (Idempotent)' });
+    return reply
+      .status(202)
+      .send({ message: 'Already processed (Idempotent)' });
   }
 
   if (error instanceof InvalidTransactionStateError) {

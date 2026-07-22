@@ -30,16 +30,36 @@ export class Transaction {
     };
   }
 
-  get id(): string { return this.props.id; }
-  get merchantId(): string { return this.props.merchantId; }
-  get blockchainTxId(): string { return this.props.blockchainTxId; }
-  get amount(): number { return this.props.amount; }
-  get currency(): string { return this.props.currency; }
-  get exchangeRate(): number | null { return this.props.exchangeRate; }
-  get amountBrl(): number | null { return this.props.amountBrl; }
-  get status(): TransactionStatus { return this.props.status; }
-  get createdAt(): Date { return this.props.createdAt; }
-  get updatedAt(): Date { return this.props.updatedAt; }
+  get id(): string {
+    return this.props.id;
+  }
+  get merchantId(): string {
+    return this.props.merchantId;
+  }
+  get blockchainTxId(): string {
+    return this.props.blockchainTxId;
+  }
+  get amount(): number {
+    return this.props.amount;
+  }
+  get currency(): string {
+    return this.props.currency;
+  }
+  get exchangeRate(): number | null {
+    return this.props.exchangeRate;
+  }
+  get amountBrl(): number | null {
+    return this.props.amountBrl;
+  }
+  get status(): TransactionStatus {
+    return this.props.status;
+  }
+  get createdAt(): Date {
+    return this.props.createdAt;
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt;
+  }
 
   applyExchangeRate(rate: number): void {
     if (this.props.status !== 'PENDING' && this.props.status !== 'PROCESSING') {

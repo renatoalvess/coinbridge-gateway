@@ -6,20 +6,25 @@ export class CoinbaseExchangeRateProvider implements IExchangeRateProvider {
 
     try {
       const response = await fetch(url);
-      
+
       if (!response.ok) {
-        throw new Error(`Coinbase API Error: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Coinbase API Error: ${response.status} ${response.statusText}`,
+        );
       }
 
       const body = await response.json();
-      
+
       if (!body.data || !body.data.amount) {
         throw new Error('Invalid response format from Coinbase API');
       }
 
       return parseFloat(body.data.amount);
     } catch (error: any) {
-      console.error(`[ExchangeRateProvider] Failed to fetch rate for ${from}-${to}:`, error.message);
+      console.error(
+        `[ExchangeRateProvider] Failed to fetch rate for ${from}-${to}:`,
+        error.message,
+      );
       throw error;
     }
   }

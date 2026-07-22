@@ -16,10 +16,10 @@ export const webhookSchema = z.object({
 export class WebhookController {
   async handle(
     request: FastifyRequest<{ Body: z.infer<typeof webhookSchema> }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const signature = request.headers['x-signature'] as string;
-    
+
     if (!signature) {
       return reply.status(401).send({ message: 'Missing signature' });
     }
@@ -30,7 +30,7 @@ export class WebhookController {
     const useCase = new ReceiveWebhookUseCase(
       transactionRepository,
       signatureValidator,
-      queueProvider
+      queueProvider,
     );
 
     const payloadString = JSON.stringify(request.body);

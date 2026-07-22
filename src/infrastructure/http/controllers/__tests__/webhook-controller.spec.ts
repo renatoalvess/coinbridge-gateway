@@ -18,7 +18,7 @@ describe('WebhookController (E2E)', () => {
         name: 'Test Merchant',
         email: 'test@merchant.com',
         apiKey: 'fake-api-key',
-      }
+      },
     });
   });
 
@@ -42,7 +42,7 @@ describe('WebhookController (E2E)', () => {
         blockchainTxId: 'tx-001',
         amount: 1000,
         currency: 'USDT',
-      }
+      },
     });
 
     expect(response.statusCode).toBe(400); // Because zod validator blocks missing header
@@ -53,14 +53,14 @@ describe('WebhookController (E2E)', () => {
       method: 'POST',
       url: '/v1/webhooks/blockchain',
       headers: {
-        'x-signature': 'invalid-signature-123'
+        'x-signature': 'invalid-signature-123',
       },
       payload: {
         merchantId: 'merchant-test-123',
         blockchainTxId: 'tx-001',
         amount: 1000,
         currency: 'USDT',
-      }
+      },
     });
 
     expect(response.statusCode).toBe(401);
@@ -80,16 +80,16 @@ describe('WebhookController (E2E)', () => {
       method: 'POST',
       url: '/v1/webhooks/blockchain',
       headers: {
-        'x-signature': signature
+        'x-signature': signature,
       },
-      payload
+      payload,
     });
 
     expect(response.statusCode).toBe(202);
 
     // Verify if it was saved in DB
     const tx = await prisma.transaction.findUnique({
-      where: { blockchain_tx_id: 'tx-002' }
+      where: { blockchain_tx_id: 'tx-002' },
     });
 
     expect(tx).toBeDefined();
@@ -110,13 +110,15 @@ describe('WebhookController (E2E)', () => {
       method: 'POST',
       url: '/v1/webhooks/blockchain',
       headers: {
-        'x-signature': signature
+        'x-signature': signature,
       },
-      payload
+      payload,
     });
 
     // Should return 202 even though it already exists, acting idempotently
     expect(response.statusCode).toBe(202);
-    expect(JSON.parse(response.body).message).toBe('Already processed (Idempotent)');
+    expect(JSON.parse(response.body).message).toBe(
+      'Already processed (Idempotent)',
+    );
   });
 });

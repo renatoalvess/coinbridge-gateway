@@ -12,28 +12,36 @@ const webhookProvider = new FetchWebhookNotificationProvider();
 const sendWebhookNotificationUseCase = new SendWebhookNotificationUseCase(
   transactionRepository,
   merchantRepository,
-  webhookProvider
+  webhookProvider,
 );
 
 export const webhookWorker = new Worker(
   'webhooks-out-queue',
   async (job: Job<{ transactionId: string }>) => {
-    console.log(`[WebhookWorker] Processing job ${job.id} for transaction ${job.data.transactionId} (Attempt ${job.attemptsMade + 1})`);
-    
+    console.log(
+      `[WebhookWorker] Processing job ${job.id} for transaction ${job.data.transactionId} (Attempt ${job.attemptsMade + 1})`,
+    );
+
     await sendWebhookNotificationUseCase.execute(job.data.transactionId);
-    
-    console.log(`[WebhookWorker] Webhook for transaction ${job.data.transactionId} delivered successfully!`);
+
+    console.log(
+      `[WebhookWorker] Webhook for transaction ${job.data.transactionId} delivered successfully!`,
+    );
   },
   {
     connection: { url: env.REDIS_URL },
     concurrency: 5,
-  }
+  },
 );
 
 webhookWorker.on('failed', (job, err) => {
   if (job) {
-    console.error(`[WebhookWorker] Job ${job.id} failed with error: ${err.message}`);
+    console.error(
+      `[WebhookWorker] Job ${job.id} failed with error: ${err.message}`,
+    );
   }
 });
 
-console.log('[WebhookWorker] Webhook Worker started and listening to webhooks-out-queue...');
+console.log(
+  '[WebhookWorker] Webhook Worker started and listening to webhooks-out-queue...',
+);

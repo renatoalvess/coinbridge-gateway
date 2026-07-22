@@ -17,11 +17,14 @@ export class ReceiveWebhookUseCase {
   constructor(
     private readonly transactionRepository: ITransactionRepository,
     private readonly signatureValidator: ISignatureValidator,
-    private readonly queueProvider: IQueueProvider
+    private readonly queueProvider: IQueueProvider,
   ) {}
 
   async execute(input: ReceiveWebhookInput): Promise<void> {
-    const isValid = this.signatureValidator.isValid(input.payloadString, input.signature);
+    const isValid = this.signatureValidator.isValid(
+      input.payloadString,
+      input.signature,
+    );
     if (!isValid) {
       throw new InvalidSignatureError();
     }

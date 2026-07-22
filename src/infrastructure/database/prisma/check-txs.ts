@@ -11,18 +11,18 @@ async function main() {
       exchangeRate: true,
       amountBrl: true,
       status: true,
-      createdAt: true
-    }
+      createdAt: true,
+    },
   });
 
-  const formattedTxs = txs.map(tx => ({
+  const formattedTxs = txs.map((tx) => ({
     id: tx.id.slice(0, 8) + '...',
     amount: (tx.amount / 100).toFixed(2),
     currency: tx.currency,
     rate: tx.exchangeRate ? tx.exchangeRate.toFixed(4) : '-',
     amountBrl: tx.amountBrl ? (tx.amountBrl / 100).toFixed(2) : '-',
     status: tx.status,
-    time: tx.createdAt.toLocaleTimeString()
+    time: tx.createdAt.toLocaleTimeString(),
   }));
 
   console.log('\n--- Últimas 10 Transações ---\n');

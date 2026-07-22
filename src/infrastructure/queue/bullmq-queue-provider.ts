@@ -16,24 +16,32 @@ export class BullMQQueueProvider implements IQueueProvider {
   }
 
   async publishTransactionEvent(transactionId: string): Promise<void> {
-    await this.transactionsQueue.add('process-pix', { transactionId }, {
-      removeOnComplete: true,
-      attempts: 5,
-      backoff: {
-        type: 'exponential',
-        delay: 2000, // 2s, 4s, 8s, 16s...
-      }
-    });
+    await this.transactionsQueue.add(
+      'process-pix',
+      { transactionId },
+      {
+        removeOnComplete: true,
+        attempts: 5,
+        backoff: {
+          type: 'exponential',
+          delay: 2000, // 2s, 4s, 8s, 16s...
+        },
+      },
+    );
   }
 
   async publishWebhookEvent(transactionId: string): Promise<void> {
-    await this.webhooksQueue.add('send-webhook', { transactionId }, {
-      removeOnComplete: true,
-      attempts: 5,
-      backoff: {
-        type: 'exponential',
-        delay: 3000,
-      }
-    });
+    await this.webhooksQueue.add(
+      'send-webhook',
+      { transactionId },
+      {
+        removeOnComplete: true,
+        attempts: 5,
+        backoff: {
+          type: 'exponential',
+          delay: 3000,
+        },
+      },
+    );
   }
 }

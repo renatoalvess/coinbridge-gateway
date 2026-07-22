@@ -20,8 +20,7 @@ async function main() {
   console.log('Merchant Criado:', merchant);
 }
 
-main()
-  .catch((e) => {
-    console.error('Erro ao rodar o seed:', e);
-    process.exit(1);
-  });
+main().catch((e) => {
+  console.error('Erro ao rodar o seed:', e);
+  process.exit(1);
+});

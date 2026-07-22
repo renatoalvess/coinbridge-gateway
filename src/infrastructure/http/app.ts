@@ -14,12 +14,12 @@ export const app = Fastify({ logger: true });
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
-
 app.register(fastifySwagger, {
   openapi: {
     info: {
       title: 'CoinBridge Gateway API',
-      description: 'API responsável por receber depósitos em criptomoedas e efetuar a liquidação via PIX',
+      description:
+        'API responsável por receber depósitos em criptomoedas e efetuar a liquidação via PIX',
       version: '1.0.0',
     },
     components: {

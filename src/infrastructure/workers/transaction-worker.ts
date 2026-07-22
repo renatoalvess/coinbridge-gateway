@@ -13,25 +13,27 @@ const queueProvider = new BullMQQueueProvider(env.REDIS_URL);
 const exchangeRateProvider = new CoinbaseExchangeRateProvider();
 
 const processTransferUseCase = new ProcessTransferUseCase(
-  transactionRepository, 
-  pixProvider, 
+  transactionRepository,
+  pixProvider,
   queueProvider,
-  exchangeRateProvider
+  exchangeRateProvider,
 );
 
 export const transactionWorker = new Worker(
   'transactions-queue',
   async (job: Job<{ transactionId: string }>) => {
-    console.log(`[Worker] Processing job ${job.id} for transaction ${job.data.transactionId} (Attempt ${job.attemptsMade + 1})`);
-    
+    console.log(
+      `[Worker] Processing job ${job.id} for transaction ${job.data.transactionId} (Attempt ${job.attemptsMade + 1})`,
+    );
+
     await processTransferUseCase.execute(job.data.transactionId);
-    
+
     console.log(`[Worker] Job ${job.id} processed successfully`);
   },
   {
     connection: { url: env.REDIS_URL },
     concurrency: 5,
-  }
+  },
 );
 
 transactionWorker.on('failed', (job, err) => {

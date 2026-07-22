@@ -3,7 +3,7 @@ export interface MerchantProps {
   name: string;
   email: string;
   apiKey?: string;
-  callbackUrl?: string | null; 
+  callbackUrl?: string | null;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -16,7 +16,7 @@ export class Merchant {
       ...props,
       id: props.id ?? crypto.randomUUID(),
       apiKey: props.apiKey ?? crypto.randomUUID(),
-      callbackUrl: props.callbackUrl ?? null, 
+      callbackUrl: props.callbackUrl ?? null,
       createdAt: props.createdAt ?? new Date(),
       updatedAt: props.updatedAt ?? new Date(),
     };
