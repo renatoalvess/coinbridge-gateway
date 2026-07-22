@@ -42,3 +42,8 @@ jobs:
       # Run unit tests directly. (Integration tests with Prisma require a DB setup)
       - name: Run Unit Tests
         run: pnpm test
+        env:
+          DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy"
+          REDIS_URL: "redis://localhost:6379"
+          WEBHOOK_SECRET: "dummy-secret"
+          PORT: "3001"
