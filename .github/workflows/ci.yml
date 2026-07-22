@@ -1,0 +1,43 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check Formatting (Prettier)
+        run: pnpm exec prettier --check "src/**/*.ts"
+
+      - name: Run Linter (ESLint)
+        run: pnpm lint
+
+      - name: Build and Type Check
+        run: pnpm build
+
+      # Run unit tests directly. (Integration tests with Prisma require a DB setup)
+      - name: Run Unit Tests
+        run: pnpm test

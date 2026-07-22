@@ -1,0 +1,45 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Merchant {
+  id        String        @id @default(uuid())
+  name      String
+  email     String        @unique
+  apiKey    String        @unique @default(uuid())
+  callbackUrl String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  
+  transactions Transaction[]
+
+  @@map("merchants")
+}
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
+}
+
+model Transaction {
+  id               String            @id @default(uuid())
+  merchantId       String
+  blockchain_tx_id String            @unique
+  amount           Int               // Amount in cents to prevent precision issues
+  currency         String
+  exchangeRate     Float?
+  amountBrl        Int?
+  status           TransactionStatus @default(PENDING)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id])
+
+  @@map("transactions")
+}
